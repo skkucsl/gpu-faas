@@ -1,0 +1,6 @@
+import scala.sys.process._
+
+val cmd = Seq("bash","-c","echo $$")
+for (line <- cmd.lineStream_! ){
+  printf("%s\n",line)
+}

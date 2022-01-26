@@ -1,0 +1,13 @@
+Today achievement
+1. Can execute commandline operation on scala (recorded on file)
+2. Commandline timestamp with nanosecond level (using date +%s%N)
+3. Find Container launching path
+- openwhisk/core/invoker/src/main/scala/org/apache/openwhisk/core/containerpool/docker
+- DockerContainerFactory.createContainer -> DockerContainer.create -> DockerClient.run (using runCmd)
+4. Time analysis
+- Request ~ Docker run start 2.6x sec
+- Docker run start ~ Docker run 0.5x sec
+- Docker run ~ function start 0.2x sec
+
+//Maybe Standalone version file is same?
+

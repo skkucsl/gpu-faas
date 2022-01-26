@@ -1,0 +1,9 @@
+Docker:
+get container's pid
+- docker top [container-id]
+get conatiner's id
+- docker ps
+get container internal process's pid on host
+- pstree -p [container-pid]
+memory usage of process
+- "sudo" pmap -q pid
