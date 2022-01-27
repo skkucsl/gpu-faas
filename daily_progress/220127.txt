@@ -1,0 +1,8 @@
+pmap -x `docker top wsk0_1_prewarm_nodejs14 | head -n 2 | tail -n 1 | awk '{print $2}'`
+"size" command with binary file (e.g., a.out) show text, data, bss segment size
+"free -b" command, check system memory usage in byte (default KiB)
+
+Today's work
+1. Cannot find the location where invoker start and add container_pool for requested container...
+2. After function execution, warm state container has more libraries and anon memory space than just after function invoke script start
+3. System level memory analysis may not be proper, because variation of unused memory is too large...
