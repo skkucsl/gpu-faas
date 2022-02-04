@@ -1,0 +1,5 @@
+Today progress
+- SIGGPU presentation (개망함)
+- last attempt's code (pmap related command) error correction
+-- using getpid() on C and python os.getpid()
+-- have to repair function invoke code tomorrow 
