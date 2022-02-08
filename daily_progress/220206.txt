@@ -1,0 +1,4 @@
+Today works
+- Change pmap command on function invoke script
+-- Still does not work on some part but pmap command works correctly
+- Need to check "docker run" execution path (Jaehyun)

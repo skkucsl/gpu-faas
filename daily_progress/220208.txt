@@ -1,0 +1,12 @@
+Updated works
+- Docker run execution path with more detail path analysis
+-- Make "runc", "docker" binary for get timestamp and future analysis
+--- Codes are on binary_hijacking directory
+-- Main delay come frome "docker pull" (~2.5sec)
+-- Cold start (at docker run ~ function result return) main delay is RunC create ~ RunC start (~300ms)
+
+Future works
+- Find "runc" command caller path on containerd-shim or containerd
+- "docker pull" path analysis is necessary? (Determine where to start)
+- "docker run" path analysis is necessary?
+- Memory usage on each path as many as possible

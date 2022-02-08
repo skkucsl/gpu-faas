@@ -1,0 +1,5 @@
+/usr/bin/docker pull lqyuan980413/dockerskeleton 3 1644305940771
+/usr/bin/docker run -d 26 1644305943273
+/usr/bin/docker inspect --format 5 1644305943704
+/usr/bin/docker logs a6a1ead71a2311435437220c40e055cff0bb356715e0739322a2f51aa1fee1f4 8 1644305944048
+/usr/bin/docker pause a6a1ead71a2311435437220c40e055cff0bb356715e0739322a2f51aa1fee1f4 3 1644305944209
