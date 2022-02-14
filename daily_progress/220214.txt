@@ -1,0 +1,17 @@
+Updated works
+- Analyze memory usage of OpenWhisk's main process and container's main process
+-- Workload: ServerlessBench-6,7 (C,Python,Node.js,Ruby-hello/app)
+-- Each points are on OpenWhisk source code
+-- Using "pmap -x" command
+
+- Analyze system memory usage at function execution
+-- Workload: ServerlessBench-6 C-hello
+-- Each points are on OpenWhisk source code and actionproxy.py (custom docker image)
+-- Using "free -b" command
+
+- Make progress presentation
+-- Above results are on presentation
+
+- Check A100 GPU initialization overhead
+-- 12 seconds on 2 GPU machine
+-- Workstation GPU causing longer initialization overhead??
