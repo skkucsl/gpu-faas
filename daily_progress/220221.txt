@@ -1,0 +1,32 @@
+Update progress
+
+- Initialization overhead
+-- Check with Driver/runtime version 510.47/11.6
+-- TITAN V 0.08 (4 GPU server)
+-- TITAN RTX 0.03 (2 GPU server)
+-- RTX 3090 0.08 (4 GPU server)
+-- A100 0.2 (2 GPU server)
+
+- Multi-Instance GPU configuration
+-- Use sudo mode
+-- nvidia-smi -i [GPU ID] -mig [0(off)/1(on)]	# MIG on/off
+-- nvidia-smi mig --lgip (or --lgipp)		# Show list of gpu instances
+-- nvidia-smi mig -cgi [Instance ID] (-C)	# Create GPU instances, -C also create compute instance too
+-- nvidia-smi mig -cci [Instance ID] -gi [GPU instance #]		# Create compute instance manually
+-- nvidia-smi mig -dci -ci [compute instance #] -gi [GPU instance #]	# Delete compute instance
+-- nvidia-smi mig -dgi -gi [GPU instance #]				# Delete GPU instance, must delete compute instance first
+-- nvidia-smi -L				# Show MIG UUID to use
+-- CUDA_VISIBLE_DEVICES=MIG_UUID [executable]	# Execute with specific GPU instance
+
+- Multi-Instance GPU Time Analysis
+-- Check times for each single instance (1g.5gb, 2g.10gb, 3g.20gb, 4g.20gb, 7g.40gb, w/o MIG)
+-- Summary (Use PolyBench-ACC/datamining/correlation EXTRALARGE)
+--- API initialization time is shorter on smaller instance
+--- Memory initialization time is shorter on smaller instance but 7g.40gb is longer than w/o MIG
+--- Sum of initialization time is shorter on smaller instance
+--- Not always larger instance achieve faster execution (3g.20gb is fastest instances for this case)
+
+To Do
+- Make prototype of function launcher
+- Design GPU manager detail
+- Release memory analysis part...
