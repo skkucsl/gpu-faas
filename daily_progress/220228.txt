@@ -1,0 +1,23 @@
+Progress
+
+- Drop Memory Management for Serverless Computing
+-- Get OpenWhisk function invoke path and GPU-runtime assign at "runc create" with 130ms more additional overhead
+
+- GPU-support serverless computing
+-- MIG configuration clear and baseline measurement done (PolyBench)
+--- Without MIG / 7g / 4g / 3g / 2g / 1g
+--- API initialization time decreased on smaller GI
+--- Memory initialization time decreased on smaller GI (but Without -> 7g increased)
+--- Total initialization time decreased
+--- Kernel execution time is varied maybe because of grid configuration? (always increased, decreased / decreased to increased)
+-- Major point divided as two: Latency/Throughput
+
+# Latency
+- Main design key point is sharing GPU context
+- Previous work, Only new task which created from parent with CLONE_THREAD flags can share GPU context
+- I think I have to check do_fork function's CLONE_THREAD part
+- Maybe key is PID and Memory sharing
+
+# Througput
+- Now, no idea...
+- Summarize read papers again and gather more papers
