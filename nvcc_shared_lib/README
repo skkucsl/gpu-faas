@@ -1,0 +1,12 @@
+HOW TO MAKE SHARED LIBRARY
+nvcc -g -G -Xcompiler -fpic -c test.cu -o test.o
+nvcc -shared -o libtest.so test.o
+
+HOW TO TEST
+nvcc main.cu -ldl
+./a.out
+
+Function Name Change Solution
+nm -D libtest.so
+-> Find similar function name
+
