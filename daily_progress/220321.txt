@@ -1,0 +1,17 @@
+Progress
+- Thoughput measurement script has problem
+-- Not consider memory size (Have to use producer-consumer type function generation using python or etc..)
+
+- MIG measurement
+-- No initialization time difference when
+--- Single GI at multiple CI type
+--- Multiple same GI type
+--- Multiple different GI type (Today to do, maybe depends on GI type)
+
+- Latency-reduced function launch (Zero-init launch)
+-- Using shared library with dynamic linking API (dlsym)
+-- Successfully reduced initialization overhead
+-- Have to check CUDA kernel works well (Only check initialization time)
+
+- Throughput-maximized function launch (function-aware launch)
+-- Consider design...
