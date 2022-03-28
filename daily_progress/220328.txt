@@ -1,0 +1,10 @@
+Progress
+- Baseline throughput measurement
+-- Request queue based measurement (Defining queue size and Total number of request)
+-- Throughput = Total number of request / Total request execution time
+-- Check it on the native server but cannot measure using OpenWhisk because of configuration issue
+--- In OpenWhisk, change ansible/group_vars/all: invocationsPerMinutes (default 60 -> 600), but not changed when execution
+
+- After this week meeting, OpenWhisk modification for Zero-Init launching will be start
+
+- Have to read papers and find methodologies related to snapshot-based launching
