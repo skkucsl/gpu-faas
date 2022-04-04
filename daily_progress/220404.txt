@@ -1,0 +1,9 @@
+Progress
+- Baseline throughput measurement
+-- Not yet (maybe delayed until zero-init done)
+
+- Zero-Init launching
+-- Snapshot based launching stopped (because GPU context related to kernel file system? cannot be restored, by professor)
+-- actionproxy.py modification
+--- Libraries stdout result cannot be read by main process
+--- Prototype version return only init time value and total function time on actionproxy.py
