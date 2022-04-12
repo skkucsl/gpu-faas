@@ -1,0 +1,10 @@
+Progress
+- OpenWhisk actionproxy.py prototype modification done
+-- Change init,run phase to use dynamic library (subprocess -> ctypes)
+-- For just launching without GPU init, output of function set as init time on function
+--- Cannot read stdout of dynamic library's as variable on python (not resolved now)
+(Working well at toy code)
+
+To Do
+- Make PolyBench to test using zero-init prototype
+- Throughput measurement
