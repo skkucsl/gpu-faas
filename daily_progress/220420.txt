@@ -1,0 +1,31 @@
+Progress (0418 workshop, 0419 Meeting summary)
+- 0418
+-- GPU context sharing can occur security problem for residual of previous function's resource
+--- 1. We cannot modify GPU's internal resources using code directly, also only single function use single context at same time (no time-sharing)
+--- 2. By adopting 0419 meeting's todo concept in GPU it does not matter for no time-sharing domain
+- 0419
+-- Make new process for function execution
+--- Share process with web server can be violated isolation
+-- Using same process for next request can be violated isolation
+--- Residual resource (like writtable area or files used by previous request)
+-- New concept added (REWIND, name can be changed later)
+--- Roll back system resources to before function launched status
+--- Reuse read-only resources (resources that does not violate isolation)
+
+Procedure example
+1. Cold start request
+2. Create container and launch web server, main process
+3. Create GPU context and dynamic library that contain function loading
+4. Save current status
+5. Function launch (can reduce GPU context creation overhead - MAX 90% of function)
+6. Roll-back to saved status but not roll-back some resources that does not violated isolation
+7. Container paused
+....
+8. Warm start request
+9. Container unpaused
+10. Save current status
+11. Function launch with reuse some resources (can reduce some resource creation overhead without violate isolation)
+12. Roll-back to saved status but not roll-back some resources that does not violated isolation
+13. Container paused
+....
+
