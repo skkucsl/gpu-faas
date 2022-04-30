@@ -1,0 +1,4 @@
+Progress
+- Writing 예심 보고서
+- Test done for dividing main procecss and web process
+-- Need to porting on OpenWhisk (maybe after 예심 보고서)
