@@ -40,9 +40,11 @@ import flask
 from gevent.pywsgi import WSGIServer
 
 # Change for dl launching (BSKIM)
-import time
-import ctypes
-from numba import cuda
+#import time
+#import ctypes
+#from numba import cuda
+from socket import *
+import threading
 
 # The following import is only needed if we actually want to use the factory pattern.
 # See comment below for reasons we decided to bypass it.
@@ -69,10 +71,18 @@ class ActionRunner:
         self.binary = binary if binary else defaultBinary
         self.zipdest = zipdest if zipdest else os.path.dirname(self.source)
         # Change for dl launching (BSKIM)
-        self.lib = '/action/libow.so'
-        self.func_name = 'init_time'
-        self.func = 'None'
+        #self.lib = '/action/libow.so'
+        #self.func_name = 'init_time'
+        #self.func = 'None'
+        ''' socket open process '''
+        self.port = 40509
+        self.serverSock = socket(AF_INET, SOCK_STREAM)
+        self.serverSock.bind(('',self.port))
+        serverSock.listen(1)
+        self.connectionSock, self.addr = self.serverSock.accept()
+        ''' socket open end '''
         os.chdir(os.path.dirname(self.source))
+
 
     def preinit(self):
         return
@@ -122,7 +132,6 @@ class ActionRunner:
     # @return True iff binary exists and is executable, False otherwise
     # Change for dl launching (BSKIM)
     def verify(self):
-        '''
         return (os.path.isfile(self.binary) and
                 os.access(self.binary, os.X_OK))
         '''
@@ -137,6 +146,7 @@ class ActionRunner:
             return True
         else:
             return False
+        '''
 
 
     # constructs an environment for the action to run in
@@ -164,7 +174,8 @@ class ActionRunner:
             sys.stdout.write('%s\n' % msg)
             return (502, {'error': 'The action did not return a dictionary.'})
         s = time.time()
-        init_lib = self.func()
+        self.connectionSock.send("run")
+        init_lib = self.connectionSock.recv(1024).decode('utf-8')
         func_time = time.time() - s
         o = "{ \"init_on_lib\": " + str(init_lib) + ", \"func_time\": " + str(func_time) + "}"
 
