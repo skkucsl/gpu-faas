@@ -40,7 +40,7 @@ import flask
 from gevent.pywsgi import WSGIServer
 
 # Change for dl launching (BSKIM)
-#import time
+import time
 #import ctypes
 #from numba import cuda
 from socket import *
@@ -57,6 +57,11 @@ PLATFORM_KNATIVE = 'knative'
 DEFAULT_PLATFORM = PLATFORM_OPENWHISK
 FUNC_DL = ''
 
+def debug(msg):
+    test_file = open('/root/ow_test/test.txt','a')
+    test_file.write(msg)
+    test_file.close()
+
 class ActionRunner:
     """ActionRunner."""
     LOG_SENTINEL = 'XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX'
@@ -71,14 +76,14 @@ class ActionRunner:
         self.binary = binary if binary else defaultBinary
         self.zipdest = zipdest if zipdest else os.path.dirname(self.source)
         # Change for dl launching (BSKIM)
-        #self.lib = '/action/libow.so'
-        #self.func_name = 'init_time'
-        #self.func = 'None'
+        self.lib = '/action/libow.so'
+        self.func_name = 'init_time'
+        self.func = 'None'
         ''' socket open process '''
         self.port = 40509
         self.serverSock = socket(AF_INET, SOCK_STREAM)
         self.serverSock.bind(('',self.port))
-        serverSock.listen(1)
+        self.serverSock.listen(1)
         self.connectionSock, self.addr = self.serverSock.accept()
         ''' socket open end '''
         os.chdir(os.path.dirname(self.source))
@@ -106,6 +111,15 @@ class ActionRunner:
                 return False
         
         if prep():
+            #debug("Send - actionproxy\n")
+            #f = open('/root/ow_test/test.txt','w')
+            #f.write(msg)
+            #f.close()
+            self.connectionSock.send(bytes("init", 'utf-8'))
+            init_err = self.connectionSock.recv(1024).decode('utf-8')
+            #debug("Get - actionproxy\n")
+            if str(init_err) == 'err':
+                return False
             try:
                 # write source epilogue if any
                 # the message is passed along as it may contain other
@@ -119,6 +133,7 @@ class ActionRunner:
                 return False
         
         # verify the binary exists and is executable
+        #debug("Verify failed if error message got\n")
         return self.verify()
 
     # optionally appends source to the loaded code during <init>
@@ -132,9 +147,12 @@ class ActionRunner:
     # @return True iff binary exists and is executable, False otherwise
     # Change for dl launching (BSKIM)
     def verify(self):
+        return (os.path.isfile(self.lib) and
+                os.access(self.lib, os.R_OK))
+        '''
         return (os.path.isfile(self.binary) and
                 os.access(self.binary, os.X_OK))
-        '''
+        
         if (os.path.isfile(self.lib) and os.access(self.lib, os.R_OK)):
             stream = os.popen("nm -D " + self.lib + " | grep " + self.func_name + " | tail -n 1 | awk '{ print $3 }'")
             output = stream.read()
@@ -174,11 +192,11 @@ class ActionRunner:
             sys.stdout.write('%s\n' % msg)
             return (502, {'error': 'The action did not return a dictionary.'})
         s = time.time()
-        self.connectionSock.send("run")
+        self.connectionSock.send(bytes("run", 'utf-8'))
         init_lib = self.connectionSock.recv(1024).decode('utf-8')
+        #init_lib = 0.0
         func_time = time.time() - s
         o = "{ \"init_on_lib\": " + str(init_lib) + ", \"func_time\": " + str(func_time) + "}"
-
         '''
         try:
             input = json.dumps(args)

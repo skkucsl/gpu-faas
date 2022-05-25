@@ -6,12 +6,15 @@ from socket import *
 import threading
 import time
 
+s = time.time()
 temp = cuda.device_array((1,1))
 test = ctypes.CDLL("./libtest.so")
 fname = '_Z9init_timev'
 func = getattr(test,fname)
 func.restype = ctypes.c_double
-
+e = time.time()
+print("Init GPU: ")
+print(e-s)
 
 def receive(sock):
     while True:
