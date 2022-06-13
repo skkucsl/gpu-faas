@@ -1,0 +1,8 @@
+Progress
+- Dynamic library launching
+-- Done: Porting on OpenWhisk (similar result for previous not divided one)
+- REWIND
+-- Compare with other researches
+--- Difference: reuse container vs creation time reduction
+--- No need to save image but maintain container process
+--- Think about pros and cons of REWIND...
