@@ -1,0 +1,6 @@
+Progress
+- Maybe focus "REWIND" will be changed to function density rather than latency
+-- Tomorrow meeting
+- Cold start's docker pull remove
+-- core/invoker/src/main/scala/org/apache/openwhisk/core/containerpool/docker/DockerContainer.scala:109
+-- remove docker.pull code (because image will be pull if not cached in local server when "docker run" executed)
