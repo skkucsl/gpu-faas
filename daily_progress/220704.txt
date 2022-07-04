@@ -1,0 +1,32 @@
+Summarize REWIND
+- On warm start case, higher density is one of the challenge
+- Main blocking point is specialized container
+-- Same app's function / Same function
+-- Because of functions' isolation
+- To guarantee isolation, process must restart when request came in
+-- Forking, partially re-loading object latency required => Have to check on motivation evaluation
+
+1. Remove forking the process
+- Create function's process when container creation
+- Reuse the process without remove after request end
+- Function launch with dynamic library
+-- Therefore, some object can be reused on new request
+
+2. Guarantee each function's isolation
+- Rewind the system state after function request
+- Set rewind level (reusability ~ specializability)
+-- Reusability: rewind most of object, so container used on multiple functions
+-- Specializability: rewind neccessary object, so latency of newly creation of object removed
+
+3. To do list
+1) Motivation evaluation
+- Check warm start's latency
+-- request sent on platform (/run) ~ script receive ~ function start
+-- Multiple situation (Language, simple/hard functions)
+- Amount of Memory usage
+-- Using Azure dataset 2019
+-- Maybe impossible because it does not give function's language -> reusability check impossible
+2) TxOS code analysis
+- New/modified system call
+- task_struct
+- etc.
