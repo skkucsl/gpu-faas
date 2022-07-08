@@ -21,6 +21,7 @@ def receive(sock):
         recvData = sock.recv(1024).decode('utf-8')
         print("Received: ", recvData)
         if recvData == 'run':
+            print(time.time())
             init_time = func()
             sendData = str(init_time)
 

@@ -5,6 +5,7 @@ import time
 def send(sock):
     while True:
         sendData = input('')
+        print(time.time())
         sock.send(sendData.encode('utf-8'))
 
 def receive(sock):

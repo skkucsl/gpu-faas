@@ -1,0 +1,8 @@
+#!/usr/bin/python3
+
+import time
+import json
+
+
+startTime = time.time()
+print("{ \"startTime\": " + str(startTime) + " }", end='')
