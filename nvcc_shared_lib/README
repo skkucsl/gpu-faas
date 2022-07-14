@@ -1,4 +1,8 @@
-HOW TO MAKE SHARED LIBRARY
+HOW TO MAKE SHARED LIBRARY (gcc)
+gcc -c -Wall -Werror -fpic test.c
+gcc -shared -o libtest.so test.o
+
+HOW TO MAKE SHARED LIBRARY (nvcc)
 nvcc -g -G -Xcompiler -fpic -c test.cu -o test.o
 nvcc -shared -o libtest.so test.o
 

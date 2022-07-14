@@ -1,0 +1,55 @@
+Progress
+* Message transfer procedure on OpenWhisk
+- Request ~ Controller (I don't know, may be some codes on "wsk" or un-resolved controller codes or may be gateway sources?)
+
+- Controller-side procedure
+-- 1. core/controller/src/main/scala/org/apache/openwhisk/core/controller/Controller.scala
+--- override def routes()
+-- 2. core/controller/src/main/scala/org/apache/openwhisk/core/controller/AuthorizedRouteDispatcher.scala
+--- def routes()
+--- execute 6 times
+-- 3. core/controller/src/main/scala/org/apache/openwhisk/core/controller/Actions.scala
+--- def innerRoutes()
+-- 4. core/controller/src/main/scala/org/apache/openwhisk/core/controller/AuthorizedRouteDispatcher.scala
+--- def authorizedAndDispatch()
+-- 5. core/controller/src/main/scala/org/apache/openwhisk/core/controller/Entities.scala--- def dispatchOp() -> case ACTIVATE
+-- 6. core/controller/src/main/scala/org/apache/openwhisk/core/controller/Actions.scala
+--- def activate()
+-- 7. core/controller/src/main/scala/org/apache/openwhisk/core/controller/Actions.scala
+--- def doInvoke()
+-- 8. core/controller/src/main/scala/org/apache/openwhisk/core/controller/actions/PostActionActivation.scala
+--- def invokeAction() -> Some(executable)
+-- 9. core/controller/src/main/scala/org/apache/openwhisk/core/controller/actions/PrimitiveActions.scala
+--- def invokeSingleAction() -> else
+-- 10. core/controller/src/main/scala/org/apache/openwhisk/core/controller/actions/PrimitiveActions.scala
+--- def invokeSimpleAction() -> postedFuture (loadBalancer.publish)
+-- 11. core/controller/src/main/scala/org/apache/openwhisk/core/loadBalancer/LeanBalancer.scala
+--- override def publish()
+-- 12. core/controller/src/main/scala/org/apache/openwhisk/core/loadBalancer/CommonLoadBalancer.scala
+--- protected def sendActivationToInvoker() -> producer.send() // End of Controller
+
+- Invoker-side procedure
+-- 1. core/invoker/src/main/scala/org/apache/openwhisk/core/invoker/InvokerReactive.scala
+--- def processActivationMessage()  // called when message read from Kafka (???, comment)
+-- 2. core/invoker/src/main/scala/org/apache/openwhisk/core/invoker/InvokerReactive.scala
+--- def handleActivationMessage() -> pool ! Run(executable, msg)
+---- "val pool" is actor of "class ContainerPool", created when InvokerReactive create
+---- When pool creates, parameter "childFactory" is actor of "class ContainerProxy"
+---- First argument of childFactory's ContainerProxy.props is containerFactory.createContainer that can create real container
+-- 3. core/invoker/src/main/scala/org/apache/openwhisk/core/containerpool/ContainerPool.scala
+--- def receive() -> case r: Run
+---- 1) schedule(): Find warm container on freepool
+---- 2) use found container if find, else ContainerPool.createContainer() (container means (actor="class ContainerProxy", memorySize))
+---- 3) createContainer(): use childFactory, means create ContainerProxy (explain it upper phase)
+---- 4) Send received message (r) to actor (founded ContainerProxy)
+---- ps. "r.action.exec.image" = name of docker image
+-- 4. core/invoker/src/main/scala/org/apache/openwhisk/core/containerpool/ContainerProxy.scala
+--- class ContainerProxy -> "when(Uninitialized) -> case Event(job: Run, _)"
+---- val container = factory(...): factory() is createContainer (First argument, mentioned at 2's last line)
+-- 5. core/invoker/src/main/scala/org/apache/openwhisk/core/containerpool/docker/DockerContainerFactory.scala
+--- override def createContainer()
+-- 6. core/invoker/src/main/scala/org/apache/openwhisk/core/containerpool/docker/DockerContainer.scala
+--- def create() // erase "val pulled", becaused lazy pulling image is enough
+-- 7. core/invoker/src/main/scala/org/apache/openwhisk/core/containerpool/docker/DockerClient.scala
+--- def run() -> runCmd()
+
