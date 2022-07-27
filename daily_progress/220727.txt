@@ -1,0 +1,7 @@
+Progress
+- 1 Container - N Function : Boom!, because of package version dependencies and current flow of cloud computing systems (If no resource, attach more resource using money)
+- OpenWhisk python, node.js also using dynamic lib launching (using import on python)
+-- Same methodology as my implement (bskoon/rewind:python) but faster than mine (~ 1ms?, and alpine based image is slower than python image)
+-- My implementation (r740_files/ow_dl)
+- Workload porting
+-- ServerlessBench, SeBS, FunctionBench (r740_files/REWIND_Bench)
