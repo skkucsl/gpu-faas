@@ -1,0 +1,11 @@
+Progress
+- Workload implementation
+-- Workload 1 ~ 9 (r740_files/REWIND_Bench)
+--- Heavy library test, Simple computation, S3, Image processing, Zip
+- REWIND
+-- Lib-based launching can eliminate function-dependent resource allocation time (e.g., library)
+-- But, it could have security issue (different user reuse container)
+-- REWIND the system resources for reducing function execution time and guarantee resource isolation
+-- Implementation
+--- File system rewinder
+---- proto type implementation & simple test on container done (r740_files/fs_rewind/fs_rewind.py)
