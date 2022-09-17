@@ -1,0 +1,10 @@
+Progress
+09/01~09/16
+- Remove background thread
+- cloned_pgd -> 8K PGTable
+- Write page table walking code
+- Handling fault for rewind (almost finish)
+- Writing paper (little bit)
+
+To do
+- Handling vm area (mmap)
