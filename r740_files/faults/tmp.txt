@@ -1,0 +1,8 @@
+rewind_pgfault 17326
+rewind_pf_anon_read 3415
+rewind_pf_anon_write 2537
+rewind_pf_file_read 4054
+rewind_pf_file_write 1736
+rewind_pf_file_share 0
+rewind_pf_wp_copy 5454
+rewind_pf_wp_reuse 130
